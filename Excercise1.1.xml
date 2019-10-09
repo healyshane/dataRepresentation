@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<catalogue>
+
+	<book name="Technical">
+		<ISBN>12345678</ISBN>
+		<Title>Investigation into Glacier Flow</Title>
+		<Author>Fink Ice</Author>
+	</book>
+	<book name="Technical">
+		<ISBN>23456789</ISBN>
+		<Title>Review of Engineering Standards 1905 to 1933</Title>
+		<Author>John Wood</Author>
+	</book>
+	<book name="Cookery">
+		<ISBN>34567890</ISBN>
+		<Title>Cooking with Mangos</Title>
+		<Author>Declan Wood</Author>
+	</book>
+	<book name="Cookery">
+		<ISBN>45678901</ISBN>
+		<Title>10 minute meals</Title>
+		<Author>John Wood</Author>
+	</book>
+</catalogue>
