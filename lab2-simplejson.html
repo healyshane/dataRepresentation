@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <title>LAB2</title>
+    </head>
+
+    <body>
+        <h2>TH</h2>
+
+        <button onclick=displayJSON()>CLICK MOII</button>
+
+    </body>
+
+    <script>
+            
+            function displayJSON(){
+                var jsonstring ='{"employees": [{"firstName": "John", "lastName": "Myurpth"},{"firstName": "dfdfd", "lastName": "Myudfdfrpth"},{"firstName": "Joddhn", "lastName": "Myddurpth"}]}';
+                var obj = JSON.parse(jsonstring);    
+                for(employee of obj.employees){
+                    console.log(employee.firstName)
+            }
+
+        }
+            
+     </script>
+</html>
