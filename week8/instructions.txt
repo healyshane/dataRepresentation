@@ -1,0 +1,33 @@
+--To create virtual environment:
+virtualenv env
+
+--Create a .gitignore that has name of ENV in body, venv/
+notepad .gitignore
+
+
+--To start virtual env:
+env\Scripts\activate
+
+--To end virtual env:
+deactivate
+
+--View packages:
+pip freeze
+
+--pip install flask
+
+--Save packages as text file:
+pip freeze > requirements.txt
+
+--Re-Load the packages
+pip install -r requirements.txt
+
+--Delete Virtual Envir:
+rm -rf Name Of Virtual ENV
+
+--Command for installing all packages in Virtual Environment:
+python -m virtualenv venv --system-site-packages
+
+--Running Server with Flask instead of Python:
+1. set FLASK_APP=a_simpleServer
+2. flask run
