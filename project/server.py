@@ -21,8 +21,8 @@ def getAll():
 @app.route('/BNs/<int:id>')
 def findById(id):
     foundBNs = list(filter(lambda b: b['id'] == id, BNs))
-    #if len(foundBNs) ==0:
-        #return jsonify ({}) ,204
+    if len(foundBNs) ==0:
+        return jsonify ({}) ,204
 
 
     return jsonify(foundBNs[0])

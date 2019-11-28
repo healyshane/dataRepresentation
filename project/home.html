@@ -1,0 +1,101 @@
+<html>
+    <head>
+        <title>Data Representation Project</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+    </head>
+
+    <body>
+            <button onclick="getAllAjax()">GET ALL</button>
+            <button onclick="updateBNAjax()">UPDATE</button>
+            <button onclick="deleteBNAjax(1)">DELETE</button>
+            <button onclick="createBNAjax()">CREATE</button>
+
+            <div id="output">Diddddly</div>
+    </body>
+    
+
+    <script>
+        function getAllAjax(){
+            $.ajax({
+                "url": "http://127.0.0.1:5000/BNs",
+                "method":"GET",
+                "data": "",
+                "dataType": "JSON",
+                "success": function(result){
+                    for (BN of result){
+                        console.log(BN);
+                        document.getElementById("output").innerText=BN.act_time;
+                    }
+                },
+                "error": function(xhr,status,error){
+                    console.log("error: "+status+" msg:"+error);
+                },
+            });
+        }   
+        
+        function createBNAjax(BN){
+        var BN = { "Batch":"192K8756", "std_time": 38, "act_time": 69}
+
+        //console.log(JSON.stringify(BN));
+        $.ajax({
+            "url": "http://127.0.0.1:5000/BNs",
+            "method":"POST",
+            "data":JSON.stringify(BN),
+            "dataType": "JSON",
+            contentType: "application/json; charset=utf-8",
+            "success":function(result){
+                console.log(result);
+                 
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+
+        function updateBNAjax(BN){
+        var BN = { "id":1, "Batch":"192J1234", "std_time": 338, "act_time": 42 }
+        console.log(JSON.stringify(BN));
+        $.ajax({
+            "url": "http://127.0.0.1:5000/BNs/"+encodeURI(BN.id),
+            "method":"PUT",
+            "data":JSON.stringify(BN),
+            "dataType": "JSON",
+            contentType: "application/json; charset=utf-8",
+            "success":function(result){
+               console.log(result);
+                  
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+
+
+    function deleteBNAjax(id){
+        //var id = {"id":"1"}
+        $.ajax({
+            "url": "http://127.0.0.1:5000/BNs/"+encodeURI(id),
+            "method":"DELETE",
+            "data":"",
+            "dataType": "JSON",
+            contentType: "application/json; charset=utf-8",
+            "success":function(result){
+                console.log(result);
+                  
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+
+
+
+    </script>
+
+
+</html>

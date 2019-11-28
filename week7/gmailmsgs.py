@@ -49,17 +49,17 @@ def main():
       messages.extend(response['messages'])
 
     for message in messages:
-        #print(message['id'])
+        print(message['id'])
 
         completeMessage = service.users().messages().get(userId='me',id=message['id']).execute()
-        #print(completeMessage)
+        print(completeMessage)
         headers = completeMessage['payload']['headers']
         subjectHeader = list(filter(lambda h: h['name']=='Subject',headers))[0]['value']
         print(subjectHeader)
 
 
-    with open('aMessage.json','w') as f:
-        json.dump(completeMessage,f,indent=4)
+with open('aMessage.json','w') as f:
+    json.dump(completeMessage,f,indent=4)
 
 if __name__ == '__main__':
     main()
