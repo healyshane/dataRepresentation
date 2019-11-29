@@ -2,11 +2,50 @@
     <head>
         <title>Data Representation Project</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <style>
+        body{
+	        font-family: arial;
+	        background-color: lightgrey;
+	    }
 
+        .myHeader {
+            display: flex;
+            justify-content: space-between;
+            
+            background: grey;
+            padding: 10px;
+        }
+
+
+        .name{
+            font-size: 350%;
+            font-family: impact;
+            font-weight: bold;
+            text-shadow: 4px 2px black;
+            color:#0073BD;
+            padding: 15px;
+        }
+        </style>
 
     </head>
 
     <body>
+        <div class = "myHeader">
+                <!--AJAX logo, ref. https://www.google.com/imgres?imgurl=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fe4%2Fe9%2Ffc%2Fe4e9fc856f0ee78ce86696e5729ab1d2.png&imgrefurl=https%3A%2F%2Fwww.pinterest.es%2Fpin%2F565272190721175134%2F&tbnid=AC7wfHMOhjQEaM&vet=12ahUKEwjWt9CoyI_mAhVWXBUIHXBMAeUQMygAegUIARDdAQ..i&docid=sqd6cgoyFa3WSM&w=326&h=171&q=ajax%20web&hl=en-GB&ved=2ahUKEwjWt9CoyI_mAhVWXBUIHXBMAeUQMygAegUIARDdAQ -->
+                <div><img height = "100px" src="images/AJAX.png" title = "AJAX Logo"/></div>
+                <div class = "name"> DATA REPRESENTATION </div>
+                <div><img height = "100px" src="images/restful.png" title = "Restful API"/></div>
+        </div>
+
+        <h2>Web Application Project</h2>
+        <ul>
+            <li>Create Flask Server</li>
+            <li>REST API to perform CRUD Operations</li>
+            <li>Link to Database</li>
+            <li>Web interface, using AJAX calls to perform CRUD Operations</li>		
+        </ul>
+
+
             <button onclick="getAllAjax()">GET ALL</button>
             <button onclick="updateBNAjax()">UPDATE</button>
             <button onclick="deleteBNAjax(1)">DELETE</button>
