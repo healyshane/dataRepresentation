@@ -1,0 +1,89 @@
+show databases:
+
+mysql> SHOW databases;
++--------------------+
+| Database           |
++--------------------+
+| bus                |
+| bus2               |
+| datarep            |
+| employees          |
+| employees2         |
+| garage             |
+| hospital           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| school             |
+| sys                |
+| world              |
+
+
+mysql> use datarep;
+Database changed
+
+mysql> show tables;
++-------------------+
+| Tables_in_datarep |
++-------------------+
+| student           |
++-------------------+
+1 row in set (0.02 sec)
+
+mysql> select * from student;
++----+-----------+------+
+| id | firstname | age  |
++----+-----------+------+
+|  2 | Joe       |   56 |
++----+-----------+------+
+1 row in set (0.01 sec)
+
+
+
+
+
+# Create Table called book and fill with info:
+
+mysql> create table book(
+    -> id int NOT NULL auto_increment,
+    -> title varchar(100),
+    -> author varchar(100),
+    -> price float(8,2),
+    -> primary key(id)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> describe book;
++--------+--------------+------+-----+---------+----------------+
+| Field  | Type         | Null | Key | Default | Extra          |
++--------+--------------+------+-----+---------+----------------+
+| id     | int(11)      | NO   | PRI | NULL    | auto_increment |
+| title  | varchar(100) | YES  |     | NULL    |                |
+| author | varchar(100) | YES  |     | NULL    |                |
+| price  | float(8,2)   | YES  |     | NULL    |                |
++--------+--------------+------+-----+---------+----------------+
+4 rows in set (0.01 sec)
+
+mysql> insert into book (title,author,price) values ("1Q84","Murakami",12.99);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from book;
++----+-------+----------+-------+
+| id | title | author   | price |
++----+-------+----------+-------+
+|  1 | 1Q84  | Murakami | 12.99 |
++----+-------+----------+-------+
+1 row in set (0.00 sec)
+
+mysql> insert into book (title,author,price) values ("For Whom the Bell Tolls","Hemmingway",10.45);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from book;
++----+-------------------------+------------+-------+
+| id | title                   | author     | price |
++----+-------------------------+------------+-------+
+|  1 | 1Q84                    | Murakami   | 12.99 |
+|  2 | For Whom the Bell Tolls | Hemmingway | 10.45 |
++----+-------------------------+------------+-------+
+2 rows in set (0.00 sec)
