@@ -6,7 +6,7 @@ notepad .gitignore
 
 
 --To start virtual env:
-env\Scripts\activate
+venv\Scripts\activate
 
 --To end virtual env:
 deactivate

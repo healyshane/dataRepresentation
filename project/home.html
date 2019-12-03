@@ -42,7 +42,7 @@
             <li>Create Flask Server</li>
             <li>REST API to perform CRUD Operations</li>
             <li>Link to Database</li>
-            <li>Web interface, using AJAX calls to perform CRUD Operations</li>		
+            <li>Web interface, using AJAX calls, to perform CRUD Operations</li>		
         </ul>
 
 
@@ -50,9 +50,15 @@
             <button onclick="updateBNAjax()">UPDATE</button>
             <button onclick="deleteBNAjax(1)">DELETE</button>
             <button onclick="createBNAjax()">CREATE</button>
+            <button onclick="getPlot()">PLOT</button>
 
             <div id="output">Diddddly</div>
-    </body>
+    
+    
+            <img src="http://127.0.0.1:5000/plot" alt="my plot">
+    
+    
+        </body>
     
 
     <script>
@@ -73,6 +79,20 @@
                 },
             });
         }   
+
+
+        function getPlot(){
+            $.ajax({
+                "url": "/plot",
+                "method":"GET",
+                "data": "str",
+                "success": function(data){
+                },
+                "error": function(xhr,status,error){
+                    console.log("error: "+status+" msg:"+error);
+                },
+            });
+        } 
         
         function createBNAjax(BN){
         var BN = { "Batch":"192K8756", "std_time": 38, "act_time": 69}

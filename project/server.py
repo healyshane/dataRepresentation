@@ -1,4 +1,7 @@
 from flask import Flask, jsonify, request, abort
+import matplotlib.pyplot as plt
+import io
+import base64
 
 app = Flask(__name__, static_url_path='',static_folder='./')
 
@@ -11,6 +14,23 @@ BNs=[
     { "id":6, "Batch":"192K8756", "std_time": 38, "act_time": 55 }
 ]
 nextId=7
+
+@app.route('/plot')
+def build_plot():
+
+    img = io.BytesIO()
+
+    y = [1,2,3,4,5]
+    x = [0,2,1,3,4]
+    plt.plot(x,y)
+    plt.savefig(img, format='png')
+    img.seek(0)
+
+    plot_url = base64.b64encode(img.getvalue()).decode()
+
+    return '<img src="data:image/png;base64,{}">'.format(plot_url)
+
+
 
 #curl "http://127.0.0.1:5000/BNs"
 @app.route('/BNs')
