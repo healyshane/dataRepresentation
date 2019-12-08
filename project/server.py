@@ -1,112 +1,103 @@
 from flask import Flask, jsonify, request, abort
+from batchDAO import batchDAO
 import matplotlib.pyplot as plt
 import io
 import base64
 
 app = Flask(__name__, static_url_path='',static_folder='./')
 
-BNs=[
-    { "id":1, "Batch":"192J1234", "std_time": 38, "act_time": 42 },
-    { "id":2, "Batch":"192J987H", "std_time": 38, "act_time": 46 },
-    { "id":3, "Batch":"192J9877", "std_time": 38, "act_time": 32 },
-    { "id":4, "Batch":"192J1099", "std_time": 38, "act_time": 48 },
-    { "id":5, "Batch":"192J9888", "std_time": 38, "act_time": 60 },
-    { "id":6, "Batch":"192K8756", "std_time": 38, "act_time": 55 }
-]
-nextId=7
+# @app.route('/plot')
+# def build_plot():
 
-@app.route('/plot')
-def build_plot():
+#     img = io.BytesIO()
 
-    img = io.BytesIO()
+   
+#     y = [1,2,3,4,5]
+#     x = [0,2,1,3,4]
+#     plt.plot(x,y)
+#     plt.savefig(img, format='png')
+#     img.seek(0)
 
-    y = [1,2,3,4,5]
-    x = [0,2,1,3,4]
-    plt.plot(x,y)
-    plt.savefig(img, format='png')
-    img.seek(0)
+#     plot_url = base64.b64encode(img.getvalue()).decode()
 
-    plot_url = base64.b64encode(img.getvalue()).decode()
-
-    return '<img src="data:image/png;base64,{}">'.format(plot_url)
+#     return '<img src="data:image/png;base64,{}">'.format(plot_url)
 
 
 
-#curl "http://127.0.0.1:5000/BNs"
-@app.route('/BNs')
+#curl "http://127.0.0.1:5000/batches"
+@app.route('/batches')
 def getAll():
-    return jsonify(BNs)
+    results = batchDAO.getAll()
+    return jsonify(results)
 
-#curl "http://127.0.0.1:5000/BNs/1"
-@app.route('/BNs/<int:id>')
+
+#curl "http://127.0.0.1:5000/batches/1"
+@app.route('/batches/<int:id>')
 def findById(id):
-    foundBNs = list(filter(lambda b: b['id'] == id, BNs))
-    if len(foundBNs) ==0:
-        return jsonify ({}) ,204
+    foundBatch = batchDAO.findByID(id)
+    if len(foundBatch) == 0:
+        return jsonify({ 'error' : 'No Data' }),204
+    else:
+        return jsonify(foundBatch)
 
 
-    return jsonify(foundBNs[0])
+#curl -i -H "Content-Type:application/json" -X POST -d "{\"Batch\":\"192f2345\",\"yield\":38,\"time\":69}" "http://127.0.0.1:5000/batches"
 
-
-#curl -i -H "Content-Type:application/json" -X POST -d "{\"Batch\":\"192f2345\",\"std_time\":38,\"act_time\":69}" "http://127.0.0.1:5000/BNs"
-
-@app.route('/BNs', methods=['POST'])
+@app.route('/batches', methods=['POST'])
 def create():
-    global nextId
     if not request.json:
         abort(400)
 
     # Other checks that correctly formatted
 
-    BN={
-        "id": nextId,
+    batch={
         "Batch": request.json['Batch'],
-        "std_time": request.json['std_time'],
-        "act_time": request.json['act_time']
+        "yield": request.json['yield'],
+        "time": request.json['time']
     }
-    nextId +=1
-    BNs.append(BN)
-    return jsonify(BN)
+   
+    values = (batch['Batch'],batch['yield'],batch['time'])
+    newId = batchDAO.create(values)
+    batch['id'] = newId
+    return jsonify(batch)
 
 
-#curl -i -H "Content-Type:application/json" -X PUT -d "{\"act_time\":50}" "http://127.0.0.1:5000/BNs/1"
-@app.route('/BNs/<int:id>', methods=['PUT'])
+#curl -i -H "Content-Type:application/json" -X PUT -d "{\"time\":50}" "http://127.0.0.1:5000/batches/1"
+@app.route('/batches/<int:id>', methods=['PUT'])
 def update(id):
-    foundBNs = list(filter(lambda t: t['id'] == id, BNs))
-    if(len(foundBNs) == 0):
+    foundBatch = batchDAO.findByID(id)
+    
+    if not foundBatch:
         abort(404)
-    foundBN = foundBNs[0]
+
     if not request.json:
         abort(400)
     reqJson = request.json
 
-    if ('std_time' in reqJson and type(reqJson['std_time']) is not int):
+    if ('yield' in reqJson and type(reqJson['yield']) is not int):
         abort(400)
 
-    if ('act_time' in reqJson and type(reqJson['act_time']) is not int):
+    if ('time' in reqJson and type(reqJson['time']) is not int):
         abort(400)
 
     if 'Batch'in reqJson:
-        foundBN['Batch'] = reqJson['Batch']
-    if 'std_time' in reqJson:
-        foundBN['std_time'] = reqJson['std_time']
-    if 'act_time' in reqJson:
-        foundBN['act_time'] = reqJson['act_time']
-        #CHECK
-        #Check if integer
+        foundBatch['Batch'] = reqJson['Batch']
 
-    return jsonify(foundBN)
-    
+    if 'yield' in reqJson:
+        foundBatch['yield'] = reqJson['yield']
 
-    return "In update for ID "+str(id)
+    if 'time' in reqJson:
+        foundBatch['time'] = reqJson['time']
 
-#curl -X DELETE "http://127.0.0.1:5000/BNs/1"
-@app.route('/BNs/<int:id>', methods=['DELETE'])
+    values = (foundBatch['batch'],foundBatch['yield'],foundBatch['time'],foundBatch['id']) 
+    batchDAO.update(values)
+    return jsonify(foundBatch)
+
+
+#curl -X DELETE "http://127.0.0.1:5000/batches/1"
+@app.route('/batches/<int:id>', methods=['DELETE'])
 def delete(id):
-    foundBNs = list(filter(lambda t: t['id'] == id, BNs))
-    if(len(foundBNs) == 0):
-        abort(404)
-    BNs.remove(foundBNs[0])
+    batchDAO.delete(id)
     return jsonify({"done":True})
 
 

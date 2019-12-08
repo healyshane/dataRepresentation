@@ -47,9 +47,9 @@
 
 
             <button onclick="getAllAjax()">GET ALL</button>
-            <button onclick="updateBatchAjax()">UPDATE</button>
-            <button onclick="deleteBatchAjax(1)">DELETE</button>
-            <button onclick="createBatchAjax()">CREATE</button>
+            <button onclick="updateBNAjax()">UPDATE</button>
+            <button onclick="deleteBNAjax(1)">DELETE</button>
+            <button onclick="createBNAjax()">CREATE</button>
             <button onclick="getPlot()">PLOT</button>
 
             <div id="output">Diddddly</div>
@@ -64,14 +64,14 @@
     <script>
         function getAllAjax(){
             $.ajax({
-                "url": "http://127.0.0.1:5000/batches",
+                "url": "http://127.0.0.1:5000/BNs",
                 "method":"GET",
                 "data": "",
                 "dataType": "JSON",
                 "success": function(result){
-                    for (batch of result){
-                        console.log(batch);
-                        document.getElementById("output").innerText=batch.time;
+                    for (BN of result){
+                        console.log(BN);
+                        document.getElementById("output").innerText=BN.act_time;
                     }
                 },
                 "error": function(xhr,status,error){
@@ -81,26 +81,27 @@
         }   
 
 
-        // function getPlot(){
-        //     $.ajax({
-        //         "url": "/plot",
-        //         "method":"GET",
-        //         "data": "str",
-        //         "success": function(data){
-        //         },
-        //         "error": function(xhr,status,error){
-        //             console.log("error: "+status+" msg:"+error);
-        //         },
-        //     });
-        // } 
+        function getPlot(){
+            $.ajax({
+                "url": "/plot",
+                "method":"GET",
+                "data": "str",
+                "success": function(data){
+                },
+                "error": function(xhr,status,error){
+                    console.log("error: "+status+" msg:"+error);
+                },
+            });
+        } 
         
-        function createBatchAjax(BATCH){
-        var BATCH = { "Batch":"192K8756", "yield": 38, "time": 69}
+        function createBNAjax(BN){
+        var BN = { "Batch":"192K8756", "std_time": 38, "act_time": 69}
 
+        //console.log(JSON.stringify(BN));
         $.ajax({
-            "url": "http://127.0.0.1:5000/batches",
+            "url": "http://127.0.0.1:5000/BNs",
             "method":"POST",
-            "data":JSON.stringify(BATCH),
+            "data":JSON.stringify(BN),
             "dataType": "JSON",
             contentType: "application/json; charset=utf-8",
             "success":function(result){
@@ -113,13 +114,13 @@
         });
     }
 
-        function updateBatchAjax(BATCH){
-        var BATCH = { "id":1, "Batch":"192J1234", "yield": 338, "time": 42 }
-        console.log(JSON.stringify(BATCH));
+        function updateBNAjax(BN){
+        var BN = { "id":1, "Batch":"192J1234", "std_time": 338, "act_time": 42 }
+        console.log(JSON.stringify(BN));
         $.ajax({
-            "url": "http://127.0.0.1:5000/batches/"+encodeURI(BATCH.id),
+            "url": "http://127.0.0.1:5000/BNs/"+encodeURI(BN.id),
             "method":"PUT",
-            "data":JSON.stringify(BATCH),
+            "data":JSON.stringify(BN),
             "dataType": "JSON",
             contentType: "application/json; charset=utf-8",
             "success":function(result){
@@ -133,10 +134,10 @@
     }
 
 
-    function deleteBatchAjax(id){
+    function deleteBNAjax(id){
         //var id = {"id":"1"}
         $.ajax({
-            "url": "http://127.0.0.1:5000/batches/"+encodeURI(id),
+            "url": "http://127.0.0.1:5000/BNs/"+encodeURI(id),
             "method":"DELETE",
             "data":"",
             "dataType": "JSON",
