@@ -1,26 +1,20 @@
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, send_file,make_response
+
 from batchDAO import batchDAO
-import matplotlib.pyplot as plt
-import io
-import base64
+from plot import do_plot
+
 
 app = Flask(__name__, static_url_path='',static_folder='./')
 
-# @app.route('/plot')
-# def build_plot():
 
-#     img = io.BytesIO()
 
-   
-#     y = [1,2,3,4,5]
-#     x = [0,2,1,3,4]
-#     plt.plot(x,y)
-#     plt.savefig(img, format='png')
-#     img.seek(0)
-
-#     plot_url = base64.b64encode(img.getvalue()).decode()
-
-#     return '<img src="data:image/png;base64,{}">'.format(plot_url)
+@app.route('/plot', methods=['GET'])
+def plotting():
+    bytes_obj = do_plot()
+    
+    return send_file(bytes_obj,
+                     attachment_filename='plot.png',
+                     mimetype='image/png')
 
 
 
@@ -52,8 +46,8 @@ def create():
 
     batch={
         "Batch": request.json['Batch'],
-        "yield": request.json['yield'],
-        "time": request.json['time']
+        "yield": request.json['Yield'],
+        "time": request.json['Time']
     }
    
     values = (batch['Batch'],batch['yield'],batch['time'])
