@@ -1,20 +1,20 @@
 from flask import Flask, jsonify, request, abort, send_file,make_response
 
 from batchDAO import batchDAO
-from plot import do_plot
+# from plot import do_plot
 
 
 app = Flask(__name__, static_url_path='',static_folder='./')
 
 
 
-@app.route('/plot', methods=['GET'])
-def plotting():
-    bytes_obj = do_plot()
+# @app.route('/plot', methods=['GET'])
+# def plotting():
+#     bytes_obj = do_plot()
     
-    return send_file(bytes_obj,
-                     attachment_filename='plot.png',
-                     mimetype='image/png')
+#     return send_file(bytes_obj,
+#                      attachment_filename='plot.png',
+#                      mimetype='image/png')
 
 
 

@@ -22,7 +22,7 @@ def getAll():
     print (df)
 
 
-    df.plot(x = "id",y="yield")
+    df.plot(x = "id",y="yield", kind ="bar", color = "green", title="Yield per Batch")
     plt.show()
 
 

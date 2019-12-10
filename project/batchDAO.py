@@ -63,6 +63,5 @@ class BatchDAO:
                 item[colname] = value
         return item
 
-    
 
 batchDAO = BatchDAO()
