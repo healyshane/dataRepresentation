@@ -87,17 +87,14 @@
 
             
 
-        <div id="createPlot">
-                <img src="http://127.0.0.1:5000/plot"/>
+<!-- 
+        <img src="http://127.0.0.1:5000/plot"/>  -->
 
-        </div>
 
     </body>
     
 
     <script>
-
-
         function showCreate(){
             document.getElementById('showCreateButton').style.display="none"
             document.getElementById('batchTable').style.display="none"
@@ -198,7 +195,7 @@
             var batch ={}
             batch.id  = rowElement.getAttribute('id')
             batch.Batch = rowElement.cells[1].firstChild.textContent
-            batch.Yield = parseInt(rowElement.cells[2].firstChild.textContent,10)
+            batch.Yield = rowElement.cells[2].firstChild.textContent
             batch.Time = parseInt(rowElement.cells[3].firstChild.textContent,10)
             return batch
         }
@@ -251,6 +248,8 @@
             });
         }   
 
+
+        
         
         function createBatchAjax(batch){
         //var batch = { "Batch":"192K8756", "yield": 38, "time": 69}
@@ -276,7 +275,7 @@
 
         function updateBatchAjax(batch){
        // var batch = { "id":1, "Batch":"192J1234", "yield": 338, "time": 42 }
-        //console.log(JSON.stringify(batch));
+        console.log(JSON.stringify(batch));
         $.ajax({
             "url": "http://127.0.0.1:5000/batches/"+encodeURI(batch.id),
             "method":"PUT",
@@ -312,9 +311,8 @@
     }
 
     getAllAjax();
-    // getPlot();
 
-       
+
     </script>
 
 
