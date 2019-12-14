@@ -1,26 +1,39 @@
 import mysql.connector
+import dbconfig as cfg
 
 class BatchDAO:
     db=""
 
-    def __init__(self):
+    def connectToDB(self):
         self.db = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="pass",
-        database="datarepresentation"
-    )
+        host= cfg.mysql['host'],
+        user= cfg.mysql['username'],
+        password= cfg.mysql['password'],
+        database= cfg.mysql["database"]
+        )
+
+
+    def __init__(self):
+        self.connectToDB()
+
+    def getCursor(self):
+        if not self.db.is_connected():
+            self.connectToDB()
+        return self.db.cursor()
+
 
     def create(self, values):
-        cursor = self.db.cursor()
+        cursor = self.getCursor()
         sql="insert into batch (batch, yield, time) values (%s,%s,%s)"
         cursor.execute(sql, values)
 
         self.db.commit()
-        return cursor.lastrowid
+        lastRowId=cursor.lastrowid
+        cursor.close()
+        return lastRowId
 
     def getAll(self):
-        cursor = self.db.cursor()
+        cursor = self.getCursor()
         sql="select * from batch"
         cursor.execute(sql)
         results = cursor.fetchall()
@@ -28,18 +41,21 @@ class BatchDAO:
         returnArray = []
         for result in results:
             returnArray.append(self.convertToDict(result))
+        cursor.close()
         return returnArray
 
     def findByID(self, id):
-        cursor = self.db.cursor()
+        cursor = self.getCursor()
         sql="select * from batch where id = %s"
         values = (id,)
         cursor.execute(sql, values)
         result = cursor.fetchone()
-        return self.convertToDict(result)
+        batch = self.convertToDict(result)
+        cursor.close()
+        return batch
  
     def update(self, values):
-        cursor = self.db.cursor()
+        cursor = self.getCursor()
         sql="update batch set batch= %s, yield=%s, time=%s where id = %s"
         cursor.execute(sql, values)
         self.db.commit()
@@ -51,7 +67,8 @@ class BatchDAO:
 
         cursor.execute(sql, values)
         self.db.commit()
-        print("delete done")
+        cursor.close()
+
 
     def convertToDict(self,result):
         colnames=['id','batch','yield','time']

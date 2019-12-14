@@ -7,7 +7,7 @@ from plot import do_plot
 app = Flask(__name__, static_url_path='',static_folder='./')
 
 
-# prevent cached responses
+# trying to prevent cached responses
 if app.config["DEBUG"]:
     @app.after_request
     def after_request(response):

@@ -28,6 +28,13 @@
             color:#0073BD;
             padding: 15px;
         }
+
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
         </style>
 
     </head>
@@ -88,7 +95,7 @@
             
 
         <div id="createPlot">
-                <img src="http://127.0.0.1:5000/plot"/>
+                <img src="http://127.0.0.1:5000/plot" onerror=hostid() class="center"/>
 
         </div>
 
@@ -96,7 +103,9 @@
     
 
     <script>
-
+        function hostid(){
+            var src = window.location.origin + "/plot"
+        }
 
         function showCreate(){
             document.getElementById('showCreateButton').style.display="none"
@@ -235,8 +244,9 @@
 
 
         function getAllAjax(){
+            host = window.location.origin
             $.ajax({
-                "url": "http://127.0.0.1:5000/batches",
+                "url": host="/batches",
                 "method":"GET",
                 "data": "",
                 "dataType": "JSON",
@@ -254,49 +264,51 @@
         
         function createBatchAjax(batch){
         //var batch = { "Batch":"192K8756", "yield": 38, "time": 69}
-
-        $.ajax({
-            "url": "http://127.0.0.1:5000/batches",
-            "method":"POST",
-            "data":JSON.stringify(batch),
-            "dataType": "JSON",
-            contentType: "application/json; charset=utf-8",
-            "success":function(result){
-                batch.id = result.id
-                addBatchToTable(batch)
-                clearForm()
-                showViewAll()          
-                 
-            },
-            "error":function(xhr,status,error){
-                console.log("error: "+status+" msg:"+error);
-            }
-        });
-    }
+            host = window.location.origin
+            $.ajax({
+                "url": host+"/batches",
+                "method":"POST",
+                "data":JSON.stringify(batch),
+                "dataType": "JSON",
+                contentType: "application/json; charset=utf-8",
+                "success":function(result){
+                    batch.id = result.id
+                    addBatchToTable(batch)
+                    clearForm()
+                    showViewAll()          
+                    
+                },
+                "error":function(xhr,status,error){
+                    console.log("error: "+status+" msg:"+error);
+                }
+            });
+        }
 
         function updateBatchAjax(batch){
        // var batch = { "id":1, "Batch":"192J1234", "yield": 338, "time": 42 }
         //console.log(JSON.stringify(batch));
-        $.ajax({
-            "url": "http://127.0.0.1:5000/batches/"+encodeURI(batch.id),
-            "method":"PUT",
-            "data":JSON.stringify(batch),
-            "dataType": "JSON",
-            contentType: "application/json; charset=utf-8",
-            "success":function(result){
-              // console.log(result);
-                  
-            },
-            "error":function(xhr,status,error){
-                console.log("error: "+status+" msg:"+error);
-            }
-        });
-    }
+            host = window.location.origin
+            $.ajax({
+                "url": host+"/batches/"+encodeURI(batch.id),
+                "method":"PUT",
+                "data":JSON.stringify(batch),
+                "dataType": "JSON",
+                contentType: "application/json; charset=utf-8",
+                "success":function(result){
+                // console.log(result);
+                    
+                },
+                "error":function(xhr,status,error){
+                    console.log("error: "+status+" msg:"+error);
+                }
+            });
+        }
 
 
     function deleteBatchAjax(id){
+        host = window.location.origin
         $.ajax({
-            "url": "http://127.0.0.1:5000/batches/"+encodeURI(id),
+            "url": host+"/batches/"+encodeURI(id),
             "method":"DELETE",
             "data":"",
             "dataType": "JSON",
